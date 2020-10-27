@@ -1,0 +1,42 @@
+---
+- name: Generate an OpenSSL private key.
+  openssl_privatekey:
+    path: "{{ work_dir }}/{{ work_domain }}.key"
+
+- name: Generate an OpenSSL CSR.
+  openssl_csr:
+    path: "{{ work_dir }}/{{ work_domain }}.csr"
+    privatekey_path: "{{ work_dir }}/{{ work_domain }}.key"
+    country_name: UA
+    organization_name: TC
+    email_address: "{{ root_email_address }}"
+    common_name: "{{ work_domain }}"
+    subject_alt_name: 'DNS:*.{{ work_domain }},DNS:{{ work_domain }}'
+    useCommonNameForSAN: no
+
+- name: Generate a Self Signed OpenSSL certificate.
+  openssl_certificate:
+    path: "{{ work_dir }}/{{ work_domain }}.crt"
+    privatekey_path: "{{ work_dir }}/{{ work_domain }}.key"
+    csr_path: "{{ work_dir }}/{{ work_domain }}.csr"
+    selfsigned_not_before: "+0s"
+    selfsigned_not_after: "+96w1d2h"
+    provider: selfsigned
+
+- name: Generate an OpenSSL certificate signed with your own CA certificate
+  community.crypto.x509_certificate:
+    path: "{{ work_dir }}/{{ work_domain }}.crt"
+    csr_path: "{{ work_dir }}/{{ work_domain }}.csr"
+    ownca_path: "{{ work_dir }}/{{ root_cert_name }}.crt"
+    ownca_privatekey_path: "{{ work_dir }}/{{ root_cert_name }}.key"
+    ownca_not_before: "+0s"
+    ownca_not_after: "+96w1d2h"
+    provider: ownca
+  tags:
+    - skip_ansible_lint
+
+- name: Ensure that the certificate has a certain domain in its subjectAltName
+  openssl_certificate:
+    path: "{{ work_dir }}/{{ work_domain }}.crt"
+    provider: assertonly
+    subject_alt_name: 'DNS:*.{{ work_domain }},DNS:{{ work_domain }}'

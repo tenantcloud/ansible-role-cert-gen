@@ -1,0 +1,21 @@
+---
+galaxy_info:
+  role_name: cert_gen
+  author: Oleh Debretseni
+  description: generation of certificates
+  company: "TenantCloud LLC"
+
+  license: BSD
+
+  min_ansible_version: 2.4
+
+  platforms:
+    - name: MacOSX
+      versions:
+        - 10.14
+        - 10.15
+
+  galaxy_tags:
+    - macos
+    - mac
+    - certificate

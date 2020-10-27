@@ -1,0 +1,4 @@
+---
+# vars file for tenantcloud.cert_gen
+
+ansible_python_interpreter: "/usr/local/bin/python3"
