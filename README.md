@@ -19,7 +19,7 @@ Role Variables
 --------------
 
 ansible_user: "user"
-work_dir: "/usr/local/etc/nginx/ssl/"
+nginx_ssl_directory:
 work_domain: 
 root_cert_name: 
 root_email_address: 
@@ -38,7 +38,6 @@ Example Playbook
   become: no
   vars:
     ansible_user: "user"
-    work_dir: "/usr/local/etc/nginx/ssl"
     work_domain: 
     root_cert_name: 
     root_email_address: 
