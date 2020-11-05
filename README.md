@@ -38,9 +38,9 @@ Example Playbook
   become: no
   vars:
     ansible_user: "user"
-    work_domain: 
-    root_cert_name: 
-    root_email_address: 
+    work_domain: "example.com"
+    root_cert_name: "example-rootCA"
+    root_email_address: "admin@example.com"
   roles:
     - tenantcloud.cert_gen
 ```
